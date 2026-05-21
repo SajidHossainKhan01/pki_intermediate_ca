@@ -149,7 +149,7 @@ pki-intermediate-ca/
 ```bash
 # Clone the repo
 git clone https://github.com/SajidHossainKhan01/pki_intermediate_ca.git
-cd pki-intermediate-ca
+cd pki_intermediate_ca
 
 # Make scripts executable
 chmod +x scripts/*.sh
