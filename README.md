@@ -1,8 +1,6 @@
 # 🔐 PKI Intermediate Certificate Authority (CA) — Full Implementation
 
-> **Course Project** · Professional Masters in Cyber Security (PMICS) · University of Dhaka  
 > **Topic:** Intermediate Certificate Authority: Theory and Configuration  
-> **Instructor:** Dr. Mosaddek H. K. Tushar, Professor, CSE
 
 [![OpenSSL](https://img.shields.io/badge/OpenSSL-3.x-blue?logo=openssl)](https://www.openssl.org/)
 [![TLS](https://img.shields.io/badge/TLS-1.2%20%2F%201.3-green)](https://tools.ietf.org/html/rfc8446)
@@ -150,7 +148,7 @@ pki-intermediate-ca/
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/pki-intermediate-ca.git
+git clone https://github.com/SajidHossainKhan01/pki_intermediate_ca.git
 cd pki-intermediate-ca
 
 # Make scripts executable
@@ -540,4 +538,3 @@ MIT License — see [LICENSE](LICENSE)
 - [RFC 8446 — TLS 1.3](https://tools.ietf.org/html/rfc8446)
 - [CA/B Forum Baseline Requirements](https://cabforum.org/baseline-requirements-documents/)
 - [OpenSSL Documentation](https://www.openssl.org/docs/)
-- Lecture 05 — PMICS, CSE, University of Dhaka (Dr. M. H. K. Tushar, January 2026)
