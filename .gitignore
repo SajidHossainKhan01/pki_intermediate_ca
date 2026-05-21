@@ -1,0 +1,68 @@
+# ============================================================
+# .gitignore — CSE PKI Repository
+# ============================================================
+
+# NEVER commit private keys or certificates to version control
+# The certs/ directory is for local use only
+
+# Private keys (most critical — never commit these)
+*.key.pem
+*.key
+*.p12
+*.pfx
+*.jks
+
+# Certificates (generated locally — not tracked)
+certs/root/
+certs/intermediate/
+certs/server/
+certs/client/
+
+# CA database files (generated locally)
+index.txt
+index.txt.attr
+index.txt.old
+serial
+serial.old
+crlnumber
+*.crl.pem
+
+# CSR files (intermediate step, not needed in repo)
+*.csr.pem
+*.csr
+
+# Temporary OpenSSL files
+*.pem.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Rust
+examples/rust/target/
+Cargo.lock
+
+# Test output
+*.log
+test_output/

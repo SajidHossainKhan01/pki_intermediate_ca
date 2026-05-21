@@ -1,0 +1,119 @@
+# =============================================================================
+# Intermediate CA OpenSSL Configuration
+# CSE PKI — University of Dhaka
+# =============================================================================
+
+[ ca ]
+default_ca = CA_default
+
+[ CA_default ]
+# Directory structure
+dir               = /etc/pki/CSE/intermediate
+certs             = $dir/certs
+crl_dir           = $dir/crl
+new_certs_dir     = $dir/newcerts
+database          = $dir/index.txt
+serial            = $dir/serial
+rand_serial       = no
+
+# Key and certificate
+private_key       = $dir/private/intermediate.key.pem
+certificate       = $dir/certs/intermediate.cert.pem
+
+# CRL settings
+crlnumber         = $dir/crlnumber
+crl               = $dir/crl/intermediate.crl.pem
+crl_extensions    = crl_ext
+default_crl_days  = 30
+
+# Digest
+default_md        = sha256
+name_opt          = ca_default
+cert_opt          = ca_default
+
+# Policy
+default_days      = 825
+preserve          = no
+policy            = policy_loose   # Loose: supports IoT IDs, internal hostnames
+unique_subject    = no
+
+# -----------------------------------------------
+# Loose policy — only CN is mandatory
+# Supports: internal names, IoT device IDs, non-public hostnames
+# (These would be REJECTED by Public CA policies)
+# -----------------------------------------------
+[ policy_loose ]
+countryName             = optional
+stateOrProvinceName     = optional
+localityName            = optional
+organizationName        = optional
+organizationalUnitName  = optional
+commonName              = supplied
+emailAddress            = optional
+
+# -----------------------------------------------
+# Request defaults
+# -----------------------------------------------
+[ req ]
+default_bits        = 4096
+distinguished_name  = req_distinguished_name
+string_mask         = utf8only
+default_md          = sha256
+prompt              = no
+
+[ req_distinguished_name ]
+countryName                     = BD
+organizationName                = University of Dhaka
+organizationalUnitName          = CSE PKI
+commonName                      = CSE Intermediate CA
+
+# -----------------------------------------------
+# TLS Server Certificate Profile
+# Use: -extensions server_cert when signing server CSRs
+# -----------------------------------------------
+[ server_cert ]
+basicConstraints       = CA:false
+nsCertType             = server
+nsComment              = "CSE Intermediate CA - Server Certificate"
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid, issuer:always
+keyUsage               = critical, digitalSignature, keyEncipherment
+extendedKeyUsage       = serverAuth
+# SAN is MANDATORY — CN alone is no longer accepted by modern TLS clients
+subjectAltName         = @alt_names
+
+# -----------------------------------------------
+# TLS Client / IoT Device Certificate Profile
+# Use: -extensions client_cert when signing client/device CSRs
+# Supports mutual TLS (mTLS) for IoT, API clients, M2M
+# -----------------------------------------------
+[ client_cert ]
+basicConstraints       = CA:false
+nsCertType             = client, email
+nsComment              = "CSE Intermediate CA - Client Certificate"
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid, issuer:always
+keyUsage               = critical, digitalSignature
+extendedKeyUsage       = clientAuth
+
+# -----------------------------------------------
+# SAN section — edit per certificate
+# Override at signing time with -extfile san_ext.cnf
+# -----------------------------------------------
+[ alt_names ]
+DNS.1   = iot-cse.du.ac.bd
+DNS.2   = www.iot-cse.du.ac.bd
+# IP.1  = 192.168.1.10   # Uncomment for IP SANs
+
+# -----------------------------------------------
+# CRL Distribution — update URL to your actual CRL endpoint
+# -----------------------------------------------
+[ crl_ext ]
+authorityKeyIdentifier = keyid:always
+
+[ ocsp ]
+basicConstraints       = CA:false
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid, issuer
+keyUsage               = critical, digitalSignature
+extendedKeyUsage       = critical, OCSPSigning

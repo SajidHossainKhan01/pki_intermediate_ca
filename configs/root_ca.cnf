@@ -1,0 +1,90 @@
+# =============================================================================
+# Root CA OpenSSL Configuration
+# CSE PKI — University of Dhaka
+# =============================================================================
+
+[ ca ]
+default_ca = CA_default
+
+[ CA_default ]
+# Directory structure
+dir               = /etc/pki/CSE/root
+certs             = $dir/certs
+crl_dir           = $dir/crl
+new_certs_dir     = $dir/newcerts
+database          = $dir/index.txt
+serial            = $dir/serial
+rand_serial       = no
+
+# Key and certificate
+private_key       = $dir/private/ca.key.pem
+certificate       = $dir/certs/ca.cert.pem
+
+# CRL settings
+crlnumber         = $dir/crlnumber
+crl               = $dir/crl/ca.crl.pem
+crl_extensions    = crl_ext
+default_crl_days  = 30
+
+# Digest
+default_md        = sha256
+name_opt          = ca_default
+cert_opt          = ca_default
+
+# Policy
+default_days      = 375
+preserve          = no
+policy            = policy_strict
+unique_subject    = no
+
+# -----------------------------------------------
+# Strict policy for Root CA — only signs Intermediate CAs
+# -----------------------------------------------
+[ policy_strict ]
+countryName             = match
+stateOrProvinceName     = optional
+organizationName        = match
+organizationalUnitName  = optional
+commonName              = supplied
+emailAddress            = optional
+
+# -----------------------------------------------
+# Request defaults
+# -----------------------------------------------
+[ req ]
+default_bits        = 4096
+distinguished_name  = req_distinguished_name
+string_mask         = utf8only
+default_md          = sha256
+x509_extensions     = v3_ca
+prompt              = no
+
+[ req_distinguished_name ]
+countryName                     = BD
+organizationName                = University of Dhaka
+organizationalUnitName          = CSE PKI Root
+commonName                      = CSE Root CA
+
+# -----------------------------------------------
+# Root CA certificate extensions
+# -----------------------------------------------
+[ v3_ca ]
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid:always, issuer
+basicConstraints       = critical, CA:true
+keyUsage               = critical, digitalSignature, cRLSign, keyCertSign
+
+# -----------------------------------------------
+# Intermediate CA certificate extensions (used when signing Intermediate)
+# -----------------------------------------------
+[ v3_intermediate_ca ]
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid:always, issuer
+basicConstraints       = critical, CA:true, pathlen:0
+keyUsage               = critical, digitalSignature, cRLSign, keyCertSign
+
+# -----------------------------------------------
+# CRL extension
+# -----------------------------------------------
+[ crl_ext ]
+authorityKeyIdentifier = keyid:always

@@ -1,0 +1,31 @@
+# =============================================================================
+# SAN (Subject Alternative Name) Extension Template
+# CSE PKI — University of Dhaka
+#
+# Usage:
+#   openssl ca -config intermediate_ca.cnf \
+#     -extfile configs/san_ext.cnf \
+#     -extensions san_ext ...
+#
+# Edit the [alt_names] section for each certificate.
+# SAN is MANDATORY for modern TLS — CN alone is rejected by browsers.
+# =============================================================================
+
+[ san_ext ]
+basicConstraints       = CA:false
+keyUsage               = critical, digitalSignature, keyEncipherment
+extendedKeyUsage       = serverAuth
+subjectAltName         = @alt_names
+
+[ alt_names ]
+# DNS names
+DNS.1 = iot-cse.du.ac.bd
+DNS.2 = www.iot-cse.du.ac.bd
+DNS.3 = mqtt.cse.du.ac.bd
+
+# Uncomment for IP SANs (e.g., embedded devices)
+# IP.1 = 192.168.10.50
+# IP.2 = 10.0.0.100
+
+# Uncomment for wildcard (not recommended for production)
+# DNS.4 = *.cse.du.ac.bd
